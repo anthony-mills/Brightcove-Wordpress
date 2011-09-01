@@ -33,9 +33,33 @@ function plugin_settings(){
         wp_die( 'You do not have sufficient permissions to access this page' );
     }
 	if (!empty($_POST)) {
+		if ((!empty($_POST['brightcove_publisher_id'])) && (!empty($_POST['brightcove_player_id'])) && (!empty($_POST['brightcove_player_width'])) && 
+			(!empty($_POST['brightcove_player_height'])) && (!empty($_POST['brightcove_read_token'])) && (!empty($_POST['brightcove_write_token']))) {
+				
+			register_setting( 'brightcove-video', 'brightcove_publisher_id' );
+			register_setting( 'brightcove-video', 'brightcove_player_id' );
+			register_setting( 'brightcove-video', 'brightcove_player_width' );
+			register_setting( 'brightcove-video', 'brightcove_player_height' );
+			register_setting( 'brightcove-video', 'brightcove_read_token' );
+			register_setting( 'brightcove-video', 'brightcove_write_token' );			
+
+			update_option( 'brightcove_publisher_id', $_POST['brightcove_publisher_id'] );
+			update_option( 'brightcove_player_id', $_POST['brightcove_player_id'] );
+			update_option( 'brightcove_player_width', $_POST['brightcove_player_width'] );
+			update_option( 'brightcove_player_height', $_POST['brightcove_player_height'] );			
+			update_option( 'brightcove_write_token', $_POST['brightcove_write_token'] );
+			update_option( 'brightcove_read_token', $_POST['brightcove_read_token'] );	
+			$successMsg = 'Settings successfully saved';						 
+		} else {
+			$errorMsg = 'You need to provide all required fields';	
+		}
 		
+		if (!empty($_POST['brightcove_videos_per_page'])) {
+			register_setting( 'brightcove-video', 'brightcove_videos_per_page' );	
+			update_option( 'brightcove_videos_per_page', $_POST['brightcove_videos_per_page']);			
+		}	
 	}
-	
+	$pluginSettings = brightcove_video_check_plugin_settings(0);
 	require_once('settings.php');
 }
 
@@ -165,7 +189,7 @@ function brightcove_video_load_css()
 /*
  * Check the plugin has been configured
  */
-function brightcove_video_check_plugin_settings()
+function brightcove_video_check_plugin_settings($redirect = 1)
 {
 	$pluginSettings['brightcove_publisher_id'] = get_option('brightcove_publisher_id');
 	$pluginSettings['brightcove_player_id'] = get_option('brightcove_player_id');
@@ -173,12 +197,21 @@ function brightcove_video_check_plugin_settings()
 	$pluginSettings['brightcove_player_height'] = get_option('brightcove_player_height');
 	$pluginSettings['brightcove_read_token'] = get_option('brightcove_read_token');
 	$pluginSettings['brightcove_write_token'] = get_option('brightcove_write_token');
-		
-	if ((empty($pluginSettings['brightcove_publisher_id'])) || (empty($pluginSettings['brightcove_player_id'])) || (empty($pluginSettings['brightcove_read_token'])) || (empty($pluginSettings['brightcove_write_token']))) {
-		require_once('configuration_required.php');
-		exit;	
+
+	if ($redirect == 1) {
+		if ((empty($pluginSettings['brightcove_write_token'])) || (empty($pluginSettings['brightcove_read_token'])) || 
+			(empty($pluginSettings['brightcove_publisher_id'])) || (empty($pluginSettings['brightcove_player_id'])) || 
+			(empty($pluginSettings['brightcove_player_width'])) || (empty($pluginSettings['brightcove_player_height']))) {
+				require_once('settings-required.php');
+				exit;
+				
+		} else {
+			return $pluginSettings;
+		}
 	} else {
-		return $pluginSettings;
+		if (!empty($pluginSettings)) {
+			return $pluginSettings;
+		} 
 	}
 }
 ?>

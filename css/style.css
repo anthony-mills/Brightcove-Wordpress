@@ -1,3 +1,7 @@
+em {
+	color: red;
+}	
+
 /* tabs */
 ul.tabs {
 	margin: 0;
@@ -52,10 +56,6 @@ html ul.tabs li.active, html ul.tabs li.active a:hover  { /*--Makes sure that th
 	font-size: 1.2em;
 }
 
-
-
-
-
 /*search form*/   
 #searchForm label.error {
     color  : #FF0000;
@@ -64,10 +64,6 @@ html ul.tabs li.active, html ul.tabs li.active a:hover  { /*--Makes sure that th
 #error{
     display:none;
 }
-
-
-
-
 
 /* tables */
 table.tablesorter {
@@ -204,4 +200,25 @@ th.specalt {
 	background-image: url('../images/warning.png');
 }
 
-    
+/**** Start Notice Elements ****/
+
+#errorMsg {
+	color: #D8000C;
+	width: 98%;
+	border: dashed 1px #D8000C;
+	background-color: #FFBABA;
+	padding-left: 5px;
+	line-height: 23px;
+	display: none;
+}
+
+#successMsg {
+	color: #3207c2;
+	width: 98%;
+	border: dashed 1px #207c29;
+	background-color: #37c944;
+	padding-left: 5px;
+	line-height: 23px;
+}
+
+/**** Start Notice Elements ****/
