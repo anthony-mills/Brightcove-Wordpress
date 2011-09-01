@@ -1,0 +1,36 @@
+h2{
+	color:#000000;
+}
+p{
+	color:#000000;
+}
+
+ul{
+	list-style-type: none;  
+}
+
+#mytable1 {
+	padding: 0;
+	margin: 0;
+	border-collapse:collapse;
+}
+
+#mytable2 {
+	padding: 0;
+	margin: 0;
+	border-collapse:collapse;
+}
+#labelField{
+	
+}
+body{
+	font-family: Arial,tahoma,verdana,serif;
+	font-size: 12px;
+}
+
+#myTable1 td, #myTable2 td
+{
+
+	border: solid 1px #eee !important;
+	padding: 8px 15px;
+}
