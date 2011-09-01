@@ -1,86 +1,15 @@
 <div class="wrap">
 
 <?php
-
-// Include the BCMAPI SDK
-require_once('includes/bc-mapi.php');
-
-$tokenRead;
-$tokenWrite;
-
-$showErrorEmpty = false;
-$showErrorNumber = false;
-$showTable = false ;
-
-	//getting tokens from DB
-	$sql = sprintf("SELECT * FROM wp_bc_video_plugin WHERE userId=1");
-	$result = mysql_query($sql) or die(mysql_error());
-	
-	
-	while ($row = mysql_fetch_object($result)) {
-		$tokenRead = trim($row->tokenRead);
-		$tokenWrite = trim($row->tokenWrite);	
-	}
-
-
-	
-
-
-// Instantiate the class, passing it our Brightcove API tokens (read, then write)
-$bc = new BCMAPI(
-   $tokenRead,
-   $tokenWrite
-);
-
-
-// Define our parameters
-$params = array(
-    'video_fields' => 'id,name,shortDescription,creationDate',
-    'sort_by' => 'CREATION_DATE'
-);
-
-
-$numVideos = 20;
-
 try{
 	// Make our API call
-	$videos = $bc->findAll('video', $params);
+	$videos = $brightCove->findAll('video', $params);
 }catch(Exception $e){
 	$numVideos = 0;
-	echo '<div id="warning"><span>You have an invalid token for token red, or token write. Please use a valid token. <a href="admin.php?page=bc-settings" ><strong>settings</strong></a>.</span></div>';
-	
+	echo '<div id="warning"><span>You have an invalid token for token red, or token write. Please use a valid token. <a href="admin.php?page=bc-settings" ><strong>settings</strong></a>.</span></div>';	
 }
 
-
-
-
-
-if (isset($_POST['submit'])) { 
-	$searchBy = trim($_POST['searchBy']);
-	$valueSearch = trim($_POST['valueSearch']);
-		
-	if(empty($valueSearch)){
-		$showErrorEmpty = true;
-	}else{	
-		if($searchBy == "id"){	
-			if (!preg_match("/\d/", $valueSearch)) {	
-					$showErrorNumber = true;												
-			}else{
-				 
-				$videos = $bc->find('find_video_by_id', $valueSearch);	
-				$numVideos	= count($videos);
-			}
-		}
-			
-		if($searchBy == "name"){
-			 $videos = $bc->find('videosbytext', $valueSearch);
-			 $numVideos	= count($videos);
-		}				
-		
-	}
-	
-}
-
+$numVideos = count($videos);
 ?>
 
 <script type="text/javascript">
@@ -146,9 +75,17 @@ jQuery(document).ready(function () {
 					}
 				
 				});
-			jQuery('#myTable').paginateTable({ rowsPerPage: 10 });
+			<?php
+				if ($pluginSettings['brightcove_videos_per_page']) {
+					$videoRows = $pluginSettings['brightcove_videos_per_page'];	
+				} else {
+					$videoRows = 20;
+				}
+			?>
+			jQuery('#myTable').paginateTable({ rowsPerPage: <?= $videoRows; ?> });
 			jQuery("#myTable").tablesorter( {sortList: [[0,1]]} ); 
-					
+			
+			jQuery(".colorBox").colorbox();		
 		});			
 </script>
 
@@ -221,7 +158,7 @@ if($tokenRead == 'Token Read Goes Here' || $tokenWrite == 'Token Read Goes Here'
 					if($numVideos == 1){
 						$creationDate = $videos->creationDate/1000;
 							$mu[]= '<tr><td>'.$videos->id.'</td>';				
-							$mu[]= '<td><a href="'.get_option('siteurl').'/wp-content/plugins/wp-brightcove-video-plugin/videoInfo.php?videoId='.$videos->id.'" rel="shadowbox;width=700;height=500" >'.$videos->name.'</a></td>';
+							$mu[]= '<td><a href="'.get_option('siteurl').'/wp-content/plugins/brightcove_video/video-info.php?videoId='.$videos->id.'" class="colorBox" >'.$videos->name.'</a></td>';
 							$mu[]= '<td>'. date("M j, Y", $creationDate). '</td>';
 							$mu[]= '</tr>';				                
 						 
@@ -231,7 +168,7 @@ if($tokenRead == 'Token Read Goes Here' || $tokenWrite == 'Token Read Goes Here'
 						for ($i=0; $i<$numVideos; $i++) {
 							$creationDate = $videos[$i]->creationDate/1000;
 							$mu[]= '<tr><td>'.$videos[$i]->id.'</td>';				
-							$mu[]= '<td><a href="'.get_option('siteurl').'/wp-content/plugins/wp-brightcove-video-plugin/videoInfo.php?videoId='.$videos[$i]->id.'" rel="shadowbox;width=700;height=500" >'.$videos[$i]->name.'</a></td>';
+							$mu[]= '<td><a href="'.get_option('siteurl').'/wp-content/plugins/brightcove_video/video-info.php?videoId='.$videos[$i]->id.'" class="colorBox" >'.$videos[$i]->name.'</a></td>';
 							$mu[]= '<td>'. date("M j, Y", $creationDate). '</td>';
 							$mu[]= '</tr>';	
 												

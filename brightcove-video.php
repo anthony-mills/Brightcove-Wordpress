@@ -19,15 +19,16 @@ add_action('admin_print_styles', 'brightcove_video_load_css');
 add_action('admin_print_scripts', 'brightcove_video_load_js');
 
 function bc_video_menu() {
-   add_menu_page('Brightcove Video', 'Brightcove Video', 'manage_options', 'brightcove-video',  'wp_bc_videos');
-    
-   add_submenu_page('brightcove-video', __('Plugin Settings','brightcove-settings'), __('Plugin Settings','brightcove-settings'), 'manage_options', 'brightcove-settings', 'plugin_settings');              
-   add_submenu_page('brightcove-video', __('Brightcove Upload','upload-media'), __('Upload Media','upload-media'), 'manage_options', 'upload_media', 'wp_upload_media');                   
+	add_menu_page('Brightcove Video', 'Brightcove Video', 'manage_options', 'brightcove-video',  'wp_bc_videos');    
+	add_submenu_page('brightcove-video', __('Plugin Settings','brightcove-settings'), __('Plugin Settings','brightcove-settings'), 'manage_options', 'brightcove-settings', 'plugin_settings');              
+	add_submenu_page('brightcove-video', __('Brightcove Upload','upload-media'), __('Upload Media','upload-media'), 'manage_options', 'upload_media', 'wp_upload_media');                   
 }
 
-/*
+/**
+ * 
  * Render the plugin settings page
- */
+ * 
+ **/
 function plugin_settings(){
 	if( !current_user_can( 'manage_options' ) ) {
         wp_die( 'You do not have sufficient permissions to access this page' );
@@ -70,10 +71,22 @@ function wp_upload_media(){
 	require_once('upload-media.php');
 }
 
+/**
+ * 
+ * Display existing videos stored on Brightcove
+ * 
+ **/
 function wp_bc_videos(){
 	if( !current_user_can( 'manage_options' ) ) {
         wp_die( 'You do not have sufficient permissions to access this page' );
     }
+	
+	// Get the existing videos from 
+	$pluginSettings = brightcove_video_check_plugin_settings();
+	$brightCove = getBrightcove($pluginSettings);
+	  
+	$params = array('video_fields' => 'id,name,shortDescription,creationDate', 'sort_by' => 'CREATION_DATE');
+
 	require_once('existing-videos.php');
 }
 
@@ -162,9 +175,11 @@ function Brightcove_Render($matches)
     return $output;
 }
 
-/*
+/**
+ * 
  * Load javascript required by the backend administration pages
- */
+ * 
+ **/
 function brightcove_video_load_js()
 {	
 	wp_enqueue_script('validateJS', WP_PLUGIN_URL . '/brightcove_video/js/jquery.validate.js', array('jquery'), '1.0');
@@ -174,9 +189,11 @@ function brightcove_video_load_js()
 	wp_enqueue_script('tablePaginator', WP_PLUGIN_URL . '/brightcove_video/js/jquery.paginator.js', array('jquery'), '1.0');		
 }
 
-/*
+/**
+ * 
  * Load the custom style sheets for the admin pages
- */
+ * 
+ **/
 function brightcove_video_load_css()
 {
 	wp_register_style('brightcove_video_default', WP_PLUGIN_URL . '/brightcove_video/css/style.css');
@@ -186,9 +203,11 @@ function brightcove_video_load_css()
 	wp_enqueue_style('brightcove_video_colorbox');		
 }
 
-/*
+/**
+ * 
  * Check the plugin has been configured
- */
+ * 
+ **/
 function brightcove_video_check_plugin_settings($redirect = 1)
 {
 	$pluginSettings['brightcove_publisher_id'] = get_option('brightcove_publisher_id');
@@ -213,5 +232,34 @@ function brightcove_video_check_plugin_settings($redirect = 1)
 			return $pluginSettings;
 		} 
 	}
+}
+
+/**
+ * 
+ * Instansiate Brightcove API
+ * 
+ **/
+function getBrightcove($pluginSettings)
+{
+	require_once('includes/bc-mapi.php');
+	
+	$brightCove = new BCMAPI(
+	   $pluginSettings['brightcove_read_token'],
+	   $pluginSettings['brightcove_write_token']
+	);	
+	
+	return $brightCove;
+}
+
+/**
+ * 
+ * Format brightcove times into something readable
+ * 
+ **/
+function convertMilliseconds($ms){
+	$milliseconds = $ms; // number of milliseconds
+	$minutes = floor($milliseconds / (1000 * 60));
+	$seconds = ceil($milliseconds % (1000 * 60) / 1000);
+	echo $minutes . ':' . (($seconds < 10) ? '0' : '') . $seconds;
 }
 ?>

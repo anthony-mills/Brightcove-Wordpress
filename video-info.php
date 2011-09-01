@@ -1,32 +1,5 @@
 <?php
 
-// Include the BCMAPI SDK
-require_once('includes/bc-mapi.php');
-
-$tokenRead;
-$tokenWrite;
-
-
-require_once('../../../wp-config.php');
-
-$link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
-if (!$link) {
-    die('Could not connect: ' . mysql_error());
-}
-
-$db_selected = mysql_select_db(DB_NAME,$link);
-
-//getting tokens from DB
-$sql = sprintf("SELECT * FROM wp_bc_video_plugin WHERE userId=1");
-	
-	
-	$result = mysql_query($sql,$link) or die(mysql_error());
-	while ($row = mysql_fetch_object($result)) {
-		$tokenRead = trim($row->tokenRead);
-		$tokenWrite = trim($row->tokenWrite);	
-	}
-
-
 // Instantiate the class, passing it our Brightcove API tokens (read, then write)
 $bc = new BCMAPI(
    $tokenRead,
@@ -36,12 +9,7 @@ $bc = new BCMAPI(
 $videoId = $_GET['videoId'];
 $videos = $bc->find('find_video_by_id', $videoId);
 
-function convertMilliseconds($ms){
-	$milliseconds = $ms; // number of milliseconds
-	$minutes = floor($milliseconds / (1000 * 60));
-	$seconds = ceil($milliseconds % (1000 * 60) / 1000);
-	echo $minutes . ':' . (($seconds < 10) ? '0' : '') . $seconds;
-}
+
 
 $creationDate = $videos->creationDate/1000;
 $publishedDate = $videos->publishedDate/1000;
