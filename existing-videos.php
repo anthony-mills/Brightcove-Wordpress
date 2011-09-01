@@ -57,7 +57,7 @@ function checkNumberField(value){
 	return false;
 }				
 
-jQuery(document).ready(function () {
+	jQuery(function() {
 								
 				jQuery("#searchForm").validate({		
 					rules: {

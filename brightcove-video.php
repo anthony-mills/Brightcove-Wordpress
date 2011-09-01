@@ -83,13 +83,13 @@ function wp_bc_videos(){
 	
 	// Get the existing videos from 
 	$pluginSettings = brightcove_video_check_plugin_settings();
-	$brightCove = getBrightcove($pluginSettings);
+	$brightCove = brightcove_get_api($pluginSettings);
 	  
 	$params = array('video_fields' => 'id,name,shortDescription,creationDate', 'sort_by' => 'CREATION_DATE');
 
 	require_once('existing-videos.php');
 }
-
+ 
 function Brightcove_Parse($content)
 {
     $content = preg_replace_callback("/\[brightcove ([^]]*)\/\]/i", "Brightcove_Render", $content);
@@ -200,7 +200,13 @@ function brightcove_video_load_css()
 	wp_enqueue_style('brightcove_video_default');
 	
 	wp_register_style('brightcove_video_colorbox', WP_PLUGIN_URL . '/brightcove_video/css/colorbox.css');
-	wp_enqueue_style('brightcove_video_colorbox');		
+	wp_enqueue_style('brightcove_video_colorbox');	
+	
+	wp_register_style('brightcove_tabbed_content', WP_PLUGIN_URL . '/brightcove_video/css/tabbedcontent.css');
+	wp_enqueue_style('brightcove_tabbed_content');	
+
+	wp_register_style('brightcove_video_info', WP_PLUGIN_URL . '/brightcove_video/css/videoinfo.css');
+	wp_enqueue_style('brightcove_video_info');				
 }
 
 /**
@@ -239,7 +245,7 @@ function brightcove_video_check_plugin_settings($redirect = 1)
  * Instansiate Brightcove API
  * 
  **/
-function getBrightcove($pluginSettings)
+function brightcove_get_api($pluginSettings)
 {
 	require_once('includes/bc-mapi.php');
 	
@@ -256,7 +262,7 @@ function getBrightcove($pluginSettings)
  * Format brightcove times into something readable
  * 
  **/
-function convertMilliseconds($ms){
+function brightcove_convert_milliseconds($ms){
 	$milliseconds = $ms; // number of milliseconds
 	$minutes = floor($milliseconds / (1000 * 60));
 	$seconds = ceil($milliseconds % (1000 * 60) / 1000);

@@ -1,15 +1,15 @@
 <?php
+error_reporting(0);
+require_once('../../../wp-config.php');
 
-// Instantiate the class, passing it our Brightcove API tokens (read, then write)
-$bc = new BCMAPI(
-   $tokenRead,
-   $tokenWrite
-);
-  
+// Get the existing videos from 
+$pluginSettings = brightcove_video_check_plugin_settings();
+$brightCove = brightcove_get_api($pluginSettings);
+
 $videoId = $_GET['videoId'];
-$videos = $bc->find('find_video_by_id', $videoId);
 
 
+$videos = $brightCove->find('find_video_by_id', $videoId);
 
 $creationDate = $videos->creationDate/1000;
 $publishedDate = $videos->publishedDate/1000;
@@ -18,43 +18,35 @@ $lastModifiedDate = $videos->lastModifiedDate/1000;
 $creationDate = date("M j, Y", $creationDate);
 $publishedDate = date("M j, Y", $publishedDate);
 $lastModifiedDate = date("M j, Y", $lastModifiedDate);
-  
+error_reporting(0);
 ?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<link href='css/tabbedContent.css' rel='stylesheet' type='text/css' />
-<link href='css/videoInfo.css' rel='stylesheet' type='text/css' />
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-
 
 //tab effects
 var TabbedContent = {
 	init: function() {	
-		$(".tab_item").mouseover(function() {
+		jQuery(".tab_item").click(function() {
 		
-			var background = $(this).parent().find(".moving_bg");
+			var background = jQuery(this).parent().find(".moving_bg");
 			
-			$(background).stop().animate({
-				left: $(this).position()['left']
+			jQuery(background).stop().animate({
+				left: jQuery(this).position()['left']
 			}, {
 				duration: 300
 			});
 			
-			TabbedContent.slideContent($(this));
+			TabbedContent.slideContent(jQuery(this));
 			
 		});
 	},
 	
 	slideContent: function(obj) {
 		
-		var margin = $(obj).parent().parent().find(".slide_content").width();
-		margin = margin * ($(obj).prevAll().size() - 1);
+		var margin = jQuery(obj).parent().parent().find(".slide_content").width();
+		margin = margin * (jQuery(obj).prevAll().size() - 1);
 		margin = margin * -1;
 		
-		$(obj).parent().parent().find(".tabslider").stop().animate({
+		jQuery(obj).parent().parent().find(".tabslider").stop().animate({
 			marginLeft: margin + "px"
 		}, {
 			duration: 300
@@ -62,24 +54,22 @@ var TabbedContent = {
 	}
 }
 
-
-
-
-$(document).ready(function() {
+jQuery(function() {
 	TabbedContent.init();
 });
-
 </script>
-</head>
-<body>
+
 <div class='tabbed_content'>
 	    <div class='tabs'>
-	        <div class='moving_bg'>
-&nbsp;	        </div>
+	        <div class='moving_bg'>&nbsp;</div>
 	        <span class='tab_item'>
-	            Basic </span>
+	            Basic 
+	        </span>
+	        
 	        <span class='tab_item'>
-	            Advanced </span>	    </div>
+	            More Info
+	        </span>	    
+ 	  	</div>
 	 
   <div class='slide_content'>
 	        <div class='tabslider'>
@@ -101,6 +91,12 @@ $(document).ready(function() {
                                     <td><span id="labelField"> Short Description </span></td>
                                     <td><?php echo $videos->shortDescription ; ?></span></td>
                                   </tr>
+                                  
+                                  <tr>
+                                    <td><span id="labelField"> Wordpress Shortcode </span></td>
+                                    <td>[brightcove video="<?php echo $videos->id; ?>" /]</span></td>
+                                  </tr>
+                                                                    
                                 </table>
                                                                
                            </li>
@@ -129,7 +125,7 @@ $(document).ready(function() {
                                   </tr>
                                   <tr>
                                     <td><span id="labelField"> Length </span> </td>
-                                    <td><span id="valueField"><?php convertMilliseconds($videos->length) ; ?></span></td>
+                                    <td><span id="valueField"><?php brightcove_convert_milliseconds($videos->length) ; ?></span></td>
                                   </tr>
                                   <tr>
                                     <td><span id="labelField"> Times this Video has been played since its creation </span></td>
@@ -146,6 +142,3 @@ $(document).ready(function() {
 	        </div>
   </div>
 </div>
-
-</body>
-</html>
