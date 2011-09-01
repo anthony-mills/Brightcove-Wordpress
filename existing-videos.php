@@ -126,16 +126,11 @@ function checkNumberField(value){
 	}
 	
 	return false;
-}
-
-jQuery(document).ready(function () {
-			$('#myTable').paginateTable({ rowsPerPage: 10 });
-		});
-				
+}				
 
 jQuery(document).ready(function () {
 								
-				$("#searchForm").validate({		
+				jQuery("#searchForm").validate({		
 					rules: {
 						valueSearch:{
 							required: true,
@@ -150,20 +145,11 @@ jQuery(document).ready(function () {
 						}
 					}
 				
-				});	
+				});
+			jQuery('#myTable').paginateTable({ rowsPerPage: 10 });
+			jQuery("#myTable").tablesorter( {sortList: [[0,1]]} ); 
 					
-		});
-
-//Calling lightbox to display video info
-Shadowbox.init({});	
-		
-//table sorter
-$(document).ready(function() 
-			{ 
-				$("#myTable").tablesorter( {sortList: [[0,1]]} ); 
-			} 
-		); 		
-	
+		});			
 </script>
 
 <?php   

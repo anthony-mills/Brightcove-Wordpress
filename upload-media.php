@@ -181,9 +181,6 @@ if ('upload-media.php' == basename($_SERVER['SCRIPT_FILENAME'])){
 	}
 	?>
 </div>
-     
-</body>  
-</html>
   
 
 

@@ -32,6 +32,10 @@ function plugin_settings(){
 	if( !current_user_can( 'manage_options' ) ) {
         wp_die( 'You do not have sufficient permissions to access this page' );
     }
+	if (!empty($_POST)) {
+		
+	}
+	
 	require_once('settings.php');
 }
 
@@ -95,40 +99,31 @@ function Brightcove_Render($matches)
     preg_match_all('/(\w*)=(.*?) /i', $matches[1], $attributes);
     $arguments = array();
 
-    foreach ( (array) $attributes[1] as $key => $value )
-  {
+    foreach ( (array) $attributes[1] as $key => $value ) {
         // Strip out legacy quotes
         $arguments[$value] = str_replace('"', '', $attributes[2][$key]);
     }
 
-
-    if (( !array_key_exists('video', $arguments) ) && ( !array_key_exists('player', $arguments) ))
-  {
+    if (( !array_key_exists('video', $arguments) ) && ( !array_key_exists('player', $arguments) )) {
         return '<div style="background-color:#f99; padding:10px;">Brightcove Player Widget Error: Required parameter "video" or "player" is missing!</div>';
         exit;
-    }
-    else
-    {
-    $video = $arguments['video'];
-  }
+    } else {
+    	$video = $arguments['video'];
+	}
 
-    if( array_key_exists('width', $arguments) )
-  {
-        $height = $arguments['width'];
-    }
+	if( array_key_exists('width', $arguments) ) {
+		$height = $arguments['width'];
+	}
 
-    if( array_key_exists('height', $arguments) )
-  {
-        $height = $arguments['height'];
-    }
+	if( array_key_exists('height', $arguments) ) {
+		$height = $arguments['height'];
+	}
 
-    if( array_key_exists('player', $arguments) )
-  {
-        $player = $arguments['player'];
-    }
+	if( array_key_exists('player', $arguments) ) {
+		$player = $arguments['player'];
+	}
          
   $output .= '<script language="JavaScript" type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences.js"></script>
-		
 		<object id="myExperience$BCpost" class="BrightcoveExperience">
 		  <param name="bgcolor" value="#FFFFFF" />
 		  <param name="width" value="480" />

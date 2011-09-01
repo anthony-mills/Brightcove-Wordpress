@@ -85,7 +85,7 @@ table.tablesorter thead tr th, table.tablesorter tfoot tr th {
 	padding: 4px;
 }
 table.tablesorter thead tr .header {
-	background-image: url(../images/bg.gif);
+	background-image: url('../images/bg.gif');
 	background-repeat: no-repeat;
 	background-position: center right;
 	cursor: pointer;
@@ -100,10 +100,10 @@ table.tablesorter tbody tr.odd td {
 	background-color:#333;
 }
 table.tablesorter thead tr .headerSortUp {
-	background-image: url(../images/asc.gif);
+	background-image: url('../images/asc.gif');
 }
 table.tablesorter thead tr .headerSortDown {
-	background-image: url(../images/desc.gif);
+	background-image: url('../images/desc.gif');
 }
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
 background-color: #ddd;
@@ -177,6 +177,31 @@ th.specalt {
 	color: #797268;
 }
 
+#info, #success, #warning,  #validation {
+	border: 1px solid;
+	margin: 10px 0px;
+	padding:15px 10px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	margin-top: 25px;
+}
 
+#info {
+	color: #00529B;
+	background-color: #BDE5F8;
+	background-image: url('../images/info.png');
+}
+
+#success {
+	color: #4F8A10;
+	background-color: #DFF2BF;
+	background-image:url('../images/good.png');
+}
+
+#warning {
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url('../images/warning.png');
+}
 
     
