@@ -1,14 +1,13 @@
 <?php 
 /* 
 Plugin Name: Brightcove Video Plugin
-Plugin URI: http://www.imageination.tv
 Description: Upload and embed videos to and from your bright cove account
 Version: 0.1 
 Author: Anthony Mills
 Author URI: http://www.development-cycle.com
 */
 
-if ('wp-brightcove-video-plugin.php' == basename($_SERVER['SCRIPT_FILENAME'])){
+if ('brightcove-video.php' == basename($_SERVER['SCRIPT_FILENAME'])){
 	die ('Access denied');
 }
 
@@ -40,14 +39,14 @@ function wp_upload_media(){
 	if( !current_user_can( 'manage_options' ) ) {
         wp_die( 'You do not have sufficient permissions to access this page' );
     }
-	require_once('upload_media.php');
+	require_once('upload-media.php');
 }
 
 function wp_bc_videos(){
 	if( !current_user_can( 'manage_options' ) ) {
         wp_die( 'You do not have sufficient permissions to access this page' );
     }
-	require_once('videos.php');
+	require_once('existing-videos.php');
 }
 
 function Brightcove_Parse($content)

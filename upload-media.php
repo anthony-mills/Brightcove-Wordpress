@@ -1,20 +1,9 @@
 <?php
-if ('settings.php' == basename($_SERVER['SCRIPT_FILENAME'])){
-	die ('Please do not access this file directly. Thanks!');
+if ('upload-media.php' == basename($_SERVER['SCRIPT_FILENAME'])){
+	die ('Access Denied');
 }
-?>
-
-<html>  
-<head>   
-    <link rel="stylesheet" href="<?php echo get_option('siteurl').'/wp-content/plugins/wp-brightcove-video-plugin/css/' ;?>style.css" type="text/css" /> 
-  
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>   
-    <script type="text/javascript" src="<?php echo get_option('siteurl').'/wp-content/plugins/wp-brightcove-video-plugin/js/' ;?>jquery.validate.js"></script>
-    <script type="text/javascript" src="<?php echo get_option('siteurl').'/wp-content/plugins/wp-brightcove-video-plugin/js/' ;?>jquery.tablesorter.js"></script>
-    <script type="text/javascript" src="<?php echo get_option('siteurl').'/wp-content/plugins/wp-brightcove-video-plugin/js/' ;?>quickpager.js"></script>
-    
-    
-    <Style>
+?>     
+<Style>
     
     	/* Errors */
 
@@ -29,17 +18,17 @@ if ('settings.php' == basename($_SERVER['SCRIPT_FILENAME'])){
 		#info {
 			color: #00529B;
 			background-color: #BDE5F8;
-			background-image: url('<?php echo get_option('siteurl').'/wp-content/plugins/wp-brightcove-video-plugin/images/info.png'; ?>');
+			background-image: url('<?php echo get_option('siteurl').'/wp-content/plugins/brightcove-video/images/info.png'; ?>');
 		}
 		#success {
 			color: #4F8A10;
 			background-color: #DFF2BF;
-			background-image:url('<?php echo get_option('siteurl').'/wp-content/plugins/wp-brightcove-video-plugin/images/good.png';?>');
+			background-image:url('<?php echo get_option('siteurl').'/wp-content/plugins/brightcove-video/images/good.png';?>');
 		}
 		#warning {
 			color: #9F6000;
 			background-color: #FEEFB3;
-			background-image: url('<?php echo get_option('siteurl').'/wp-content/plugins/wp-brightcove-video-plugin/images/warning.png';?>');
+			background-image: url('<?php echo get_option('siteurl').'/wp-content/plugins/brightcove-video/images/warning.png';?>');
 		}
 		#inlineError {
 			color: #D8000C;
@@ -59,13 +48,12 @@ if ('settings.php' == basename($_SERVER['SCRIPT_FILENAME'])){
 		td {
 			border: none;
 		}
-    
-    </style>
+</style>
 
-    <script type="text/javascript">
-	$(document).ready(function() {
-		$("#uploadForm").validate({
-			errorLabelContainer: $("#inlineError"),
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		jQuery("#uploadForm").validate({
+			errorLabelContainer: Jquery("#inlineError"),
 			messages: {
 				videoTitle: {
 				    required: 'Please enter a title for the video<br>'
@@ -78,11 +66,7 @@ if ('settings.php' == basename($_SERVER['SCRIPT_FILENAME'])){
 		});
 	
 	})
-    </script>
-
-</head> 
-
-<body> 
+</script>
 
 <div class="wrap">
 
