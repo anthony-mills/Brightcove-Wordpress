@@ -181,11 +181,13 @@ if($tokenRead == 'Token Read Goes Here' || $tokenWrite == 'Token Read Goes Here'
 	       </tbody>
        </table>
 
-       <div class='pager'>
-           <a href='#' alt='Previous' class='prevPage'>Prev</a>
-           <span class='currentPage'></span> of <span class='totalPages'></span>
-           <a href='#' alt='Next' class='nextPage'>Next</a>
-       </div>
+	  <?php if (($numVideos > 0) || (!empty($numVideos))) { ?> 
+			       <div class='pager'>
+			           <a href='#' alt='Previous' class='prevPage'>Prev</a>
+			           <span class='currentPage'></span> of <span class='totalPages'></span>
+			           <a href='#' alt='Next' class='nextPage'>Next</a>
+			       </div>
+	 <?php  } ?>  
           
    </div> 
 
