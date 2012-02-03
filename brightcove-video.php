@@ -87,7 +87,7 @@ function wp_bc_videos(){
 	  
 	$params = array('video_fields' => 'id,name,shortDescription,creationDate', 'sort_by' => 'CREATION_DATE');
 
-	require_once('existing-videos.php');
+	require_once('views/existing-videos.php');
 }
  
 function Brightcove_Parse($content)
