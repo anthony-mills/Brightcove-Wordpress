@@ -68,7 +68,7 @@ function wp_upload_media(){
 	if( !current_user_can( 'manage_options' ) ) {
         wp_die( 'You do not have sufficient permissions to access this page' );
     }
-	require_once('upload-media.php');
+	require_once('views/upload-media.php');
 }
 
 /**
