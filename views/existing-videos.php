@@ -203,6 +203,12 @@ if($tokenRead == 'Token Read Goes Here' || $tokenWrite == 'Token Read Goes Here'
 	<p>Once you've installed the plug-in, you can use the following syntax to incorporate publishing code into your WordPress content:</p>
 
 	<pre> [brightcove video="123456" /] </pre>
+	
+	<p>Extra parameters which can be passed in the embed with the video id include:</p>
+	<ul>
+		<li>&#149; height - The height of the player in pixels</li>
+		<li>&#149; width - The width of the player in pixels</li>		
+	</ul>
    </div>  
    
 </div> <!-- End Wrap --> 
