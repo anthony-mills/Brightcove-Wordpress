@@ -21,6 +21,7 @@ php_value post_max_size 900M
 
 = 0.3 =
 Video embed functionality
+Fixed broken content paths
 
 = 0.2 =
 Improved upload process
