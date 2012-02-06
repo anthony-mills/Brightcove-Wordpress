@@ -18,6 +18,9 @@ add_action('admin_menu', 'brightcoveVideoMenu');
 add_action('admin_print_styles', 'brightcoveVideoLoadCss');
 add_action('admin_print_scripts', 'brightcoveVideoLoadJs');
 
+// Add the embed shotcode
+add_shortcode('brightcoveVideo', 'brightcoveVideoEmbed');
+
 function brightcoveVideoMenu() {
 	add_menu_page('Brightcove Video', 'Brightcove Video', 'manage_options', 'brightcove-video',  'brightcoveVideoExistingMedia');    
 	add_submenu_page('brightcove-video', __('Plugin Settings','brightcove-settings'), __('Plugin Settings','brightcove-settings'), 'manage_options', 'brightcove-settings', 'brightcoveVideoPluginSettings');              
@@ -90,91 +93,6 @@ function brightcoveVideoExistingMedia(){
 	require_once('views/existing-videos.php');
 }
  
-function brightcoveVideoParse($content)
-{
-    $content = preg_replace_callback("/\[brightcove ([^]]*)\/\]/i", "brightcoveVideoRender", $content);
-    return $content;
-}
-
-function brightcoveVideoRender($matches)
-{
-	global $video, $player, $publisher, $width, $height, $arguments;
-
-	$sql = sprintf("SELECT * FROM wp_bc_video_plugin WHERE userId=1");
-	$result = mysql_query($sql) or die(mysql_error());
-	while ($row = mysql_fetch_object($result)) {
-		$tokenRead = $row->tokenRead;
-		$tokenWrite = $row->tokenWrite;	
-		$publisherId = $row->publisherId; 
-		$playerId = $row->playerId; 
-		$width = $row->width; 
-		$height = $row->height;
-	}
-
-
-
-	//set video info for brightcove player
-	//Set the publisher ID - YOU MUST SET THIS TO YOUR OWN PUBLISHER ID
-	$publisher = $publisherId;
-	
-	//Set a default player to use - YOU MUST SET THIS TO YOUR OWN DEFAULT PLAYER
-	$player = $playerId;
-	
-	//Set width and height for the default video player
-	$width = $width;
-	$height = $height;
-	
-	//Define default video variable
-	$videoid = 0;
-	
-	//The actual parse content function called by the filter
-	//This will use the callback function BCVideo_Render to do the
-	//actual text replacement for the widget
-   
-    $output = '';
-    $matches[1] = str_replace(array('&#8221;','&#8243;'), '', $matches[1]);
-    preg_match_all('/(\w*)=(.*?) /i', $matches[1], $attributes);
-    $arguments = array();
-
-    foreach ( (array) $attributes[1] as $key => $value ) {
-        // Strip out legacy quotes
-        $arguments[$value] = str_replace('"', '', $attributes[2][$key]);
-    }
-
-    if (( !array_key_exists('video', $arguments) ) && ( !array_key_exists('player', $arguments) )) {
-        return '<div style="background-color:#f99; padding:10px;">Brightcove Player Widget Error: Required parameter "video" or "player" is missing!</div>';
-        exit;
-    } else {
-    	$video = $arguments['video'];
-	}
-
-	if( array_key_exists('width', $arguments) ) {
-		$height = $arguments['width'];
-	}
-
-	if( array_key_exists('height', $arguments) ) {
-		$height = $arguments['height'];
-	}
-
-	if( array_key_exists('player', $arguments) ) {
-		$player = $arguments['player'];
-	}
-         
-  $output .= '<script language="JavaScript" type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences.js"></script>
-		<object id="myExperience$BCpost" class="BrightcoveExperience">
-		  <param name="bgcolor" value="#FFFFFF" />
-		  <param name="width" value="480" />
-		  <param name="height" value="270" />
-		  <param name="playerID" value="'.$player.'" />
-		  <param name="publisherID" value="'.$publisher.'"/>
-		  <param name="isVid" value="true" />
-		  <param name="isUI" value="true" /> 
-		  <param name="@videoPlayer" value="'.$video.'" />
-		</object>';    
-             
-    return $output;
-}
-
 /**
  * 
  * Load javascript required by the backend administration pages
@@ -207,6 +125,35 @@ function brightcoveVideoLoadCss()
 
 	wp_register_style('brightcove_video_info', WP_PLUGIN_URL . '/brightcove_video/css/videoinfo.css');
 	wp_enqueue_style('brightcove_video_info');				
+}
+
+/**
+ * 
+ * Embed the video into a page or post
+ * 
+ */
+function brightcoveVideoEmbed($videoInfo)
+{	
+	if ((empty($videoInfo['video'])) && (!is_numeric($videoInfo['video']))) {
+		return false;
+	}
+	$pluginSettings = brightcoveVideoCheckPluginSettings();
+	$videoTemplate = file_get_contents( __DIR__ . '/views/embed-video.php');
+	
+	if ((!empty($videoInfo['width'])) && (is_numeric($videoInfo['width']))) {
+		$videoTemplate = str_replace('{player_width}', $videoInfo['width'], $videoTemplate);
+	} else {
+		$videoTemplate = str_replace('{player_width}', 640, $videoTemplate);
+	}
+
+	if ((!empty($videoInfo['height'])) && (is_numeric($videoInfo['height']))) {
+		$videoTemplate = str_replace('{player_height}', $videoInfo['height'], $videoTemplate);
+	} else {
+		$videoTemplate = str_replace('{player_height}', 360, $videoTemplate);
+	}	
+	$videoTemplate = str_replace('{player_id}', $pluginSettings['brightcove_player_id'], $videoTemplate);
+	$videoTemplate = str_replace('{video_id}', $videoInfo['video'], $videoTemplate);
+	echo $videoTemplate;	
 }
 
 /**
