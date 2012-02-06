@@ -19,12 +19,15 @@ php_value post_max_size 900M
 
 == Changelog ==
 
-= 0.1 = 
-First release
+= 0.3 =
+Video embed functionality
 
 = 0.2 =
 Improved upload process
 Chnged function naming convention to camel case
+
+= 0.1 = 
+First release
 
 == Screenshots ==
 None
