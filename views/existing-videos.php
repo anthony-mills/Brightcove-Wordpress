@@ -104,7 +104,7 @@ if($tokenRead == 'Token Read Goes Here' || $tokenWrite == 'Token Read Goes Here'
 <h2>Brightcove Media</h2>
 
 <noscript>
-	<meta http-equiv="Refresh" content="1;URL=<?php echo get_option('siteurl').'/wp-content/plugins/wp-brightcove-video-plugin/nojs.html' ?>">        
+	<meta http-equiv="Refresh" content="1;URL=<?php echo get_option('siteurl').'/wp-content/plugins/' . BRIGHTCOVE_PLUGIN_DIR . '/nojs.html' ?>">        
 </noscript>
 
 	<div id="searchFormDiv" style="margin-top: 10px;">
@@ -158,7 +158,7 @@ if($tokenRead == 'Token Read Goes Here' || $tokenWrite == 'Token Read Goes Here'
 					if($numVideos == 1){
 						$creationDate = $videos->creationDate/1000;
 							$mu[]= '<tr><td>'.$videos->id.'</td>';				
-							$mu[]= '<td><a href="'.get_option('siteurl').'/wp-content/plugins/brightcove_video/video-info.php?videoId='.$videos->id.'" class="colorBox" >'.$videos->name.'</a></td>';
+							$mu[]= '<td><a href="'.get_option('siteurl').'/wp-content/plugins/' . BRIGHTCOVE_PLUGIN_DIR . '/views/video-info.php?videoId='.$videos->id.'" class="colorBox" >'.$videos->name.'</a></td>';
 							$mu[]= '<td>'. date("M j, Y", $creationDate). '</td>';
 							$mu[]= '</tr>';				                
 						 
@@ -168,7 +168,7 @@ if($tokenRead == 'Token Read Goes Here' || $tokenWrite == 'Token Read Goes Here'
 						for ($i=0; $i<$numVideos; $i++) {
 							$creationDate = $videos[$i]->creationDate/1000;
 							$mu[]= '<tr><td>'.$videos[$i]->id.'</td>';				
-							$mu[]= '<td><a href="'.get_option('siteurl').'/wp-content/plugins/brightcove_video/video-info.php?videoId='.$videos[$i]->id.'" class="colorBox" >'.$videos[$i]->name.'</a></td>';
+							$mu[]= '<td><a href="'.get_option('siteurl').'/wp-content/plugins/' . BRIGHTCOVE_PLUGIN_DIR . '/views/video-info.php?videoId='.$videos[$i]->id.'" class="colorBox" >'.$videos[$i]->name.'</a></td>';
 							$mu[]= '<td>'. date("M j, Y", $creationDate). '</td>';
 							$mu[]= '</tr>';	
 												

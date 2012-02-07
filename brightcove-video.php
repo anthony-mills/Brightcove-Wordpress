@@ -73,6 +73,48 @@ function brightcoveVideoUploadMedia(){
 	if( !current_user_can( 'manage_options' ) ) {
         wp_die( 'You do not have sufficient permissions to access this page' );
     }
+
+	if ((!empty($_POST)) && (!empty($_FILES["videoFile"]))) {
+		if (($_FILES['videoFile']['error'] == 0) && ($_FILES['videoFile']['size'] > 0) && ($_FILES['videoFile']['size'] > 0) 
+			&& (move_uploaded_file($_FILES['videoFile']['tmp_name'], __DIR__ . '/uploads/' . $_FILES['videoFile']['name' ]))) {
+				$pluginSettings = brightcoveVideoCheckPluginSettings();
+				$brightcove = brightcoveVideoGetApi($pluginSettings);
+	
+				if (!empty($_POST['shortDescription'])) {
+					if (strlen($_POST['shortDescription']) > 250) {
+						$metaData['shortDescription'] = preg_replace("/[^a-zA-Z0-9\s.,?!]/", '', substr($_POST['shortDescription'], 0, 250));
+					} else {
+						$metaData['shortDescription'] = preg_replace("/[^a-zA-Z0-9\s.,?!]/", '',  $_POST['shortDescription']);
+					}
+				}
+
+				if (!empty($_POST['longDescription'])) {
+					if (strlen($_POST['longDescription']) > 4000) {
+						$metaData['longDescription'] = preg_replace("/[^a-zA-Z0-9\s.,?!]/", '',  substr($_POST['longDescription'], 0, 4000));
+					} else {
+						$metaData['longDescription'] = preg_replace("/[^a-zA-Z0-9\s.,?!]/", '',  $_POST['longDescription']);
+					}
+				}
+	
+                if (!empty($videoData['videoKeywords'])) {
+                        $metaData['tags'] = $videoData['videoKeywords'];
+                }
+                $metaData['name'] = preg_replace("/[^a-zA-Z0-9\s.,?!]/", '', $videoData['video']);
+	
+		        $options = array('create_multiple_renditions' => 'true', 'encode_to' => 'MP4');
+				
+				$videoId = $brightcove->createMedia('video', __DIR__ . '/uploads/' . $_FILES['videoFile']['name'], $metaData, $options);
+				
+				if (!empty($videoId)) {
+					$msg[] = 'Video uploaded successfully.';
+				}
+			} else {
+				$msg[] = 'Error uploading file.';
+			}
+	
+	}
+	//print_r($_FILES);
+	//exit;
 	require_once('views/upload-media.php');
 }
 

@@ -1,10 +1,10 @@
 <?php
-error_reporting(0);
-require_once('../../../wp-config.php');
+// error_reporting(0);
+require_once(__DIR__ . '/../../../../wp-config.php');
 
 // Get the existing videos from 
-$pluginSettings = brightcove_video_check_plugin_settings();
-$brightCove = brightcove_get_api($pluginSettings);
+$pluginSettings = brightcoveVideoCheckPluginSettings();
+$brightCove = brightcoveVideoGetApi($pluginSettings);
 
 $videoId = $_GET['videoId'];
 
@@ -18,7 +18,6 @@ $lastModifiedDate = $videos->lastModifiedDate/1000;
 $creationDate = date("M j, Y", $creationDate);
 $publishedDate = date("M j, Y", $publishedDate);
 $lastModifiedDate = date("M j, Y", $lastModifiedDate);
-error_reporting(0);
 ?>
 <script type="text/javascript">
 
@@ -94,7 +93,7 @@ jQuery(function() {
                                   
                                   <tr>
                                     <td><span id="labelField"> Wordpress Shortcode </span></td>
-                                    <td>[brightcove video="<?php echo $videos->id; ?>" /]</span></td>
+                                    <td>[brightcove video="<?php echo $videos->id; ?>" ]</span></td>
                                   </tr>
                                                                     
                                 </table>
@@ -125,7 +124,7 @@ jQuery(function() {
                                   </tr>
                                   <tr>
                                     <td><span id="labelField"> Length </span> </td>
-                                    <td><span id="valueField"><?php brightcove_convert_milliseconds($videos->length) ; ?></span></td>
+                                    <td><span id="valueField"><?php brightcoveVideoConvertMilliseconds($videos->length) ; ?></span></td>
                                   </tr>
                                   <tr>
                                     <td><span id="labelField"> Times this Video has been played since its creation </span></td>
