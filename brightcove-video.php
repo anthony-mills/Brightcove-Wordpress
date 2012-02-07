@@ -99,7 +99,7 @@ function brightcoveVideoUploadMedia(){
                 if (!empty($videoData['videoKeywords'])) {
                         $metaData['tags'] = $videoData['videoKeywords'];
                 }
-                $metaData['name'] = preg_replace("/[^a-zA-Z0-9\s.,?!]/", '', $videoData['video']);
+                $metaData['name'] = preg_replace("/[^a-zA-Z0-9\s.,?!]/", '', $videoData['videoTitle']);
 	
 		        $options = array('create_multiple_renditions' => 'true', 'encode_to' => 'MP4');
 				
