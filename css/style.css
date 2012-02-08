@@ -131,10 +131,6 @@ th {
 	/*background: #CAE8EA url(images/bg_header.jpg) no-repeat;*/
 }
 
-th:hover, tr:hover, td:hover
-{
-	background: #000;
-}
 
 th.nobg {
 	border-top:  1px solid #eee;
