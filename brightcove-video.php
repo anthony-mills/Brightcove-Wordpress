@@ -149,7 +149,7 @@ function brightcoveVideoLoadJs()
 	wp_enqueue_script('colorBox', WP_PLUGIN_URL . '/' . BRIGHTCOVE_PLUGIN_DIR . '/js/jquery.colorbox.js', array('jquery'), '1.0');
 	wp_enqueue_script('tableSorter', WP_PLUGIN_URL . '/' . BRIGHTCOVE_PLUGIN_DIR . '/js/jquery.tablesorter.js', array('jquery'), '1.0');	
 	wp_enqueue_script('tablePaginator', WP_PLUGIN_URL . '/' . BRIGHTCOVE_PLUGIN_DIR . '/js/jquery.paginator.js', array('jquery'), '1.0');
-	wp_enqueue_script('tablePaginator', WP_PLUGIN_URL . '/' . BRIGHTCOVE_PLUGIN_DIR . '/js/jquery.tagit.js', array('jquery'), '1.0');			
+	wp_enqueue_script('tagsInput', WP_PLUGIN_URL . '/' . BRIGHTCOVE_PLUGIN_DIR . '/js/jquery.tagsinput.js', array('jquery'), '1.0');			
 }
 
 /**
@@ -171,7 +171,7 @@ function brightcoveVideoLoadCss()
 	wp_register_style('brightcove_video_info', WP_PLUGIN_URL . '/' . BRIGHTCOVE_PLUGIN_DIR . '/css/videoinfo.css');
 	wp_enqueue_style('brightcove_video_info');	
 	
-	wp_register_style('brightcove_video_info', WP_PLUGIN_URL . '/' . BRIGHTCOVE_PLUGIN_DIR . '/css/tagit.css');
+	wp_register_style('brightcove_video_tags', WP_PLUGIN_URL . '/' . BRIGHTCOVE_PLUGIN_DIR . '/css/tagsinput.css');
 	wp_enqueue_style('brightcove_video_tags');					
 }
 
