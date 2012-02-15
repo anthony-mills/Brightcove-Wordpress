@@ -6,7 +6,7 @@ if ('upload-media.php' == basename($_SERVER['SCRIPT_FILENAME'])){
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		jQuery("#uploadForm").validate({
-			errorLabelContainer: Jquery("#inlineError"),
+			errorLabelContainer: jQuery("#inlineError"),
 			messages: {
 				videoTitle: {
 				    required: 'Please enter a title for the video<br>'
@@ -17,6 +17,11 @@ if ('upload-media.php' == basename($_SERVER['SCRIPT_FILENAME'])){
 				},      	        	        	        
 		 	}
 		});
+		
+        jQuery('#videoKeywords').tagsInput({
+		   'height':'40px',
+		   'width':'300px'        	
+        });	
 	
 	})
 </script>
@@ -44,7 +49,7 @@ if ('upload-media.php' == basename($_SERVER['SCRIPT_FILENAME'])){
 					</td>
 
 					<td>
-						<input type="text" name="videoKeywords"> (comma seperated)
+						<input type="text" name="videoKeywords" id="videoKeywords"> (comma seperated)
 					</td>				
 				</tr>	
 			
