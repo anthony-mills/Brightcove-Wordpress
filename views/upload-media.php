@@ -20,7 +20,8 @@ if ('upload-media.php' == basename($_SERVER['SCRIPT_FILENAME'])){
 		
         jQuery('#videoKeywords').tagsInput({
 		   'height':'40px',
-		   'width':'300px'        	
+		   'width':'300px',
+		   'defaultText':'Add a tag',        	
         });	
 	
 	})
