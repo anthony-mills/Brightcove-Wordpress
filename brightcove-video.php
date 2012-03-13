@@ -76,7 +76,7 @@ function brightcoveVideoUploadMedia(){
 
 	if ((!empty($_POST)) && (!empty($_FILES["videoFile"]))) {
 		if (($_FILES['videoFile']['error'] == 0) && ($_FILES['videoFile']['size'] > 0) && ($_FILES['videoFile']['size'] > 0) 
-			&& (move_uploaded_file($_FILES['videoFile']['tmp_name'], __DIR__ . '/uploads/' . $_FILES['videoFile']['name' ]))) {
+			&& (move_uploaded_file($_FILES['videoFile']['tmp_name'], dirname(__FILE__) . '/uploads/' . $_FILES['videoFile']['name' ]))) {
 				$pluginSettings = brightcoveVideoCheckPluginSettings();
 				$brightcove = brightcoveVideoGetApi($pluginSettings);
 	
@@ -103,7 +103,7 @@ function brightcoveVideoUploadMedia(){
 	
 		        $options = array('create_multiple_renditions' => 'true', 'encode_to' => 'MP4');
 				
-				$videoId = $brightcove->createMedia('video', __DIR__ . '/uploads/' . $_FILES['videoFile']['name'], $metaData, $options);
+				$videoId = $brightcove->createMedia('video', dirname(__FILE__) . '/uploads/' . $_FILES['videoFile']['name'], $metaData, $options);
 				
 				if (!empty($videoId)) {
 					$msg[] = 'Video uploaded successfully.';
@@ -186,7 +186,7 @@ function brightcoveVideoEmbed($videoInfo)
 		return false;
 	}
 	$pluginSettings = brightcoveVideoCheckPluginSettings();
-	$videoTemplate = file_get_contents( __DIR__ . '/views/embed-video.php');
+	$videoTemplate = file_get_contents( dirname(__FILE__) . '/views/embed-video.php');
 	
 	if ((!empty($videoInfo['width'])) && (is_numeric($videoInfo['width']))) {
 		$videoTemplate = str_replace('{player_width}', $videoInfo['width'], $videoTemplate);

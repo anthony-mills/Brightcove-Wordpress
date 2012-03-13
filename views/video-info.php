@@ -1,6 +1,6 @@
 <?php
 // error_reporting(0);
-require_once(__DIR__ . '/../../../../wp-config.php');
+require_once(dirname(__FILE__) . '/../../../../wp-config.php');
 
 // Get the existing videos from 
 $pluginSettings = brightcoveVideoCheckPluginSettings();
