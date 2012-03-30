@@ -30,7 +30,16 @@ if ('upload-media.php' == basename($_SERVER['SCRIPT_FILENAME'])){
 <div class="wrap">
 		<h2>Brightcove Upload Media</h2>
 		<br>
-		<div id="inlineError"></div>
+		<div id="inlineError">
+			<?php 
+				if (!empty($msg)) {
+					foreach($msg as $notice) {
+						echo $notice;
+					} 
+				}
+			?>
+			
+		</div>
 
 		<form id="uploadForm" enctype="multipart/form-data" method="POST">
 			<table>
