@@ -5,11 +5,8 @@ try{
 	// Make our API call
 	$videos = $brightCove->findAll('video', $params);
 }catch(Exception $e){
-	$numVideos = 0;
 	echo '<div id="warning"><span>You have an invalid token for token red, or token write. Please use a valid token. <a href="admin.php?page=bc-settings" ><strong>settings</strong></a>.</span></div>';	
 }
-
-$numVideos = count($videos);
 ?>
 
 <script type="text/javascript">
@@ -147,33 +144,17 @@ if($tokenRead == 'Token Read Goes Here' || $tokenWrite == 'Token Read Goes Here'
         	<tbody>     
 			<?php
 		
-			if($showTable){
-		
-					$mu = array();
-			
-					if($numVideos == 0 || $numVideos == ""){ 
+			if($showTable){			
+					if(count($videos) > 0){
+						foreach($videos as $video) {
+							$creationDate = $video->creationDate/1000;
+								echo '<tr><td>'.$video->id.'</td>';				
+								echo '<td><a href="'.get_option('siteurl').'/wp-content/plugins/' . BRIGHTCOVE_PLUGIN_DIR . '/views/video-info.php?videoId='.$video->id.'" class="colorBox" >'.$video->name.'</a></td>';
+								echo '<td>'. date("M j, Y", $creationDate). '</td>';
+								echo '</tr>' . "\r\n";		
+						}		                
+					} else {
 						echo "<tr><td colspan='3'> <center><span style='color: #FF0000;'>No Videos were Found! </span></center></td></tr>" ;
-					}
-			
-					if($numVideos == 1){
-						$creationDate = $videos->creationDate/1000;
-							$mu[]= '<tr><td>'.$videos->id.'</td>';				
-							$mu[]= '<td><a href="'.get_option('siteurl').'/wp-content/plugins/' . BRIGHTCOVE_PLUGIN_DIR . '/views/video-info.php?videoId='.$videos->id.'" class="colorBox" >'.$videos->name.'</a></td>';
-							$mu[]= '<td>'. date("M j, Y", $creationDate). '</td>';
-							$mu[]= '</tr>';				                
-						 
-						echo implode("\n",$mu);
-					}else{
-			
-						for ($i=0; $i<$numVideos; $i++) {
-							$creationDate = $videos[$i]->creationDate/1000;
-							$mu[]= '<tr><td>'.$videos[$i]->id.'</td>';				
-							$mu[]= '<td><a href="'.get_option('siteurl').'/wp-content/plugins/' . BRIGHTCOVE_PLUGIN_DIR . '/views/video-info.php?videoId='.$videos[$i]->id.'" class="colorBox" >'.$videos[$i]->name.'</a></td>';
-							$mu[]= '<td>'. date("M j, Y", $creationDate). '</td>';
-							$mu[]= '</tr>';	
-												
-						 }  
-						echo implode("\n",$mu);
 					}
 		     	
 			}
@@ -181,7 +162,8 @@ if($tokenRead == 'Token Read Goes Here' || $tokenWrite == 'Token Read Goes Here'
 	       </tbody>
        </table>
 
-	  <?php 	  
+	  <?php 	
+		  $numVideos = count($videos);  
 		  if (($numVideos >= $videoRows ) && (!empty($numVideos))) { ?> 
 				       <div class='pager'>
 				           <a href='#' alt='Previous' class='prevPage'>Prev</a>
